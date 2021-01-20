@@ -24,12 +24,8 @@ pipeline {
 			sh 'env'
 			echo 'pwd'
 			sh 'pwd'
-			echo 'ls'
-			sh 'ls'
-			echo 'ls /'
-			sh 'ls /'
-			echo 'ls /kaniko'
-			sh 'ls /kaniko'
+			echo 'find'
+			sh 'find / -print'
 		}
 	}
 
