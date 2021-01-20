@@ -35,6 +35,7 @@ pipeline {
 			sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
 			sh 'go get -u github.com/bwmarrin/discordgo'
 			sh 'go build'
+			sh 'mv bro-bot go-discord-bro-bot'
 			sh 'ls -l'
 		}
         }
