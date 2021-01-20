@@ -17,17 +17,6 @@ pipeline {
         go '1.13.15' 
     }
     stages {
-    
-    	stage('Debug') {
-		steps {
-			echo 'env'
-			sh 'env'
-			// echo 'pwd'
-			// sh 'pwd'
-			// echo 'find'
-			// sh 'find / -print'
-		}
-	}
 
         stage('Build') {
 		steps {
@@ -40,7 +29,7 @@ pipeline {
 		}
         }
 	
-	stage('Package') {
+	stage('Package and Push') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
 		}
@@ -50,24 +39,6 @@ pipeline {
             				/kaniko/executor --context $WORKSPACE --verbosity debug --destination mikej091/go-discord-bro-bot:latest
           			'''
 			}
-			/*
-			script {
-				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageName}:${env.BUILD_ID}"
-			}
-			*/
-		}
-	}
-
-/*
-	stage('Docker Push') {
-		steps {
-			echo "Pushing"
-			script {
-				docker.withRegistry('', registryCredential) {
-					dockerImage.push("$BUILD_NUMBER")
-					dockerImage.push('latest')
-				}
-			}
 		}
 	}
 
@@ -76,6 +47,6 @@ pipeline {
 			echo "Deploying"
 		}
 	}
-*/
+
     }
 }
