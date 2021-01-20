@@ -12,4 +12,16 @@ spec:
     command:
     - /busybox/cat
     tty: true
+    volumneMounts:
+      - name: docker-config
+        mountPath: /kaniko/.docker
+  volumes:
+  - name: docker-config
+    projected:
+      sources:
+        - secret:
+          name: mikej091-docker
+          items:
+            - key: .dockerconfigjson
+              path: config.json
   restartPolicy: Never
