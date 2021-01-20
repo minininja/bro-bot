@@ -12,6 +12,14 @@ pipeline {
         go '1.13.15' 
     }
     stages {
+    
+         stage('Pre Test') {
+            steps {
+                echo 'Installing dependencies'
+                sh 'go version'
+                sh 'go get -u'
+            }
+        }
 /*
         stage('Dependencies') {
             steps {
