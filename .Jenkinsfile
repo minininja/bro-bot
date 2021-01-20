@@ -34,7 +34,7 @@ pipeline {
 	stage('Package') {
 		steps {
 			script {
-				docker.build(test:${env.BUILD_ID}', '-f Dockerfile')
+				docker.build(test: '${env.BUILD_ID}', '-f Dockerfile')
 			}
 		}
 	}
