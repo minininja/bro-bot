@@ -20,7 +20,7 @@ pipeline {
         stage('Build') {
 		steps {
 			echo "Building"
-			sh 'env'
+			// sh 'env'
 			sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
 			sh 'go get -u github.com/bwmarrin/discordgo'
 			sh 'go build'
@@ -34,11 +34,11 @@ pipeline {
 			PATH = "/busybox:/kaniko:$PATH"
 		}
 		steps {
-			sh 'env'
-			sh 'sleep 3600'
+			// sh 'env'
+			// sh 'sleep 3600'
 			container(name: 'kaniko', shell: '/busybox/sh')  {
           			sh '''#!/busybox/sh
-            				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity debug --destination mikej091/go-discord-bro-bot:latest
+            				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
           			'''
 			}
 		}
