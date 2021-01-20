@@ -36,7 +36,7 @@ pipeline {
 		steps {
 			script {
 				docker.build("mikej091/go-discord-bro-bot:${env.BUILD_ID}")
-				docker.build("mikej091/go-discord-bro-bot:latest")
+				// docker.build("mikej091/go-discord-bro-bot:latest")
 			}
 		}
 	}
