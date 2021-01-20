@@ -15,13 +15,9 @@ spec:
     volumneMounts:
       - name: docker-config
         mountPath: /kaniko/.docker
+        readOnly: true
   volumes:
   - name: docker-config
-    projected:
-      sources:
-        - secret:
-          name: mikej091-docker
-          items:
-            - key: config.json
-              path: config.json
+    secret:
+      secretName: mikej091-docker
   restartPolicy: Never
