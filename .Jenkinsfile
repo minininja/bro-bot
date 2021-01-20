@@ -46,9 +46,9 @@ pipeline {
 				PATH="/busybux:/kaniko:$PATH"
 			}
 			container(name: 'kaniko', shell: '/busybox/sh')  {
-				sh '''#!/busybox/sh
-					/kaniko/executor --context $WORKSPACE --verbosity debug --destination=${imageName}:${env.BUILD_ID}'
-				'''
+          			sh '''#!/busybox/sh
+            				/kaniko/executor --context $WORKSPACE --verbosity debug --destination $imageName:${env.BUILD_ID}
+          			'''
 			}
 			/*
 			script {
