@@ -32,7 +32,6 @@ pipeline {
 	stage('Package and Push') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
-			DOCKER_CONFIG=/tmp/config.json
 		}
 		steps {
 			// sh 'env'
@@ -43,6 +42,7 @@ pipeline {
 				}
 				sh 'cat /tmp/config.json'
           			sh '''#!/busybox/sh
+				        export DOCKER_CONFIG=/tmp/config.json
             				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
           			'''
 			}
