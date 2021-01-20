@@ -41,10 +41,10 @@ pipeline {
         }
 	
 	stage('Package') {
+		environment {
+			PATH = "/busybox:/kaniko:$PATH"
+		}
 		steps {
-			environment {
-				PATH="/busybux:/kaniko:$PATH"
-			}
 			container(name: 'kaniko', shell: '/busybox/sh')  {
           			sh '''#!/busybox/sh
             				/kaniko/executor --context $WORKSPACE --verbosity debug --destination $imageName:${env.BUILD_ID}
