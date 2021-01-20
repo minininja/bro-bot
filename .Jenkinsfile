@@ -20,7 +20,12 @@ pipeline {
     
     	stage('Debug') {
 		steps {
+			echo 'env'
 			sh 'env'
+			echo 'ls'
+			sh 'ls'
+			echo 'ls /kaniko'
+			sh 'ls /kaniko'
 		}
 	}
 
