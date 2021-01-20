@@ -9,26 +9,13 @@ spec:
     workingDir: /home/jenkins
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: IfNotPresent
-    volumeMounts:
-      - name: docker-config
-        mountPath: /kaniko/.docker
-        readOnly: true
+    env:
+      - name: dockerhub-secret
+        value from:
+          secretKeyRef:
+            name: mikej091-docker
+            key: auth
     command:
       - /busybox/cat
     tty: true
-  - name: kaniko2
-    workingDir: /home/jenkins
-    image: gcr.io/kaniko-project/executor:debug
-    imagePullPolicy: IfNotPresent
-    volumeMounts:
-      - name: docker-config
-        mountPath: /kaniko/.docker
-        readOnly: true
-    command:
-      - sleep
-      - 3600
-  volumes:
-    - name: docker-config
-      secret:
-        secretName: mikej091-docker
   restartPolicy: Never
