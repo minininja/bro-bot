@@ -35,7 +35,7 @@ pipeline {
 			sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
 			sh 'go get -u github.com/bwmarrin/discordgo'
 			sh 'go build'
-			sh 'mv bro-bot go-discord-bro-bot'
+			sh 'mv $WORKSPACE/bro-bot $WORKSPACE/go-discord-bro-bot'
 			sh 'ls -l'
 		}
         }
@@ -43,7 +43,7 @@ pipeline {
 	stage('Package') {
 		steps {
 			container(name: 'kaniko', shell: '/busybox/sh')  {
-				sh '/kaniko/executor --context `pwd` --verbosity debug --destination=${imageName}:${env.BUILD_ID}'
+				sh '/kaniko/executor --context $WORKSPACE --verbosity debug --destination=${imageName}:${env.BUILD_ID}'
 			}
 			/*
 			script {
