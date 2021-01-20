@@ -36,6 +36,7 @@ pipeline {
 		steps {
 			// sh 'env'
 			// sh 'sleep 3600'
+			sh "echo '{ \"auths\": { \"https://index.docker.io/v1/\": { \"auth\": \"${dockerhub-secret}\" } } }' > /kaniko/.docker/config.json"
 			container(name: 'kaniko', shell: '/busybox/sh')  {
           			sh '''#!/busybox/sh
             				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
