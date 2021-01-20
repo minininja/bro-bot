@@ -38,10 +38,10 @@ pipeline {
 			// sh 'sleep 3600'
 			container(name: 'kaniko', shell: '/busybox/sh')  {
 				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
-					writeFile file: "/tmp/config.json", text: '{ "auths": { "https://index.docker.io/v1/": { "auth": "${dockerhubauth}" } } }'
+					writeFile file: "${WORKSPACE}/config.json", text: '{ "auths": { "https://index.docker.io/v1/": { "auth": "${dockerhubauth}" } } }'
 					sh 'ls "/tmp"'
           				sh '''#!/busybox/sh
-					        export DOCKER_CONFIG=/tmp/config.json
+					        export DOCKER_CONFIG=${WORKSPACE}/config.json
 	            				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 	          			'''
 				}
