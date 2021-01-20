@@ -12,7 +12,7 @@ spec:
     command:
     - /busybox/cat
     tty: true
-    volumneMounts:
+    volumeMounts:
       - name: docker-config
         mountPath: /kaniko/.docker
         readOnly: true
