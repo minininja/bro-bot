@@ -37,7 +37,9 @@ pipeline {
 			// sh 'env'
 			// sh 'sleep 3600'
 			container(name: 'kaniko', shell: '/busybox/sh')  {
-				sh "echo '{ \"auths\": { \"https://index.docker.io/v1/\": { \"auth\": \"${dockerauth}\" } } }' > /kaniko/.docker/config.json"
+				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
+					sh "echo '{ \"auths\": { \"https://index.docker.io/v1/\": { \"auth\": \"${dockerhubauth}\" } } }' > /kaniko/.docker/config.json"
+				}
           			sh '''#!/busybox/sh
             				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
           			'''
