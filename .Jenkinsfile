@@ -5,6 +5,9 @@ pipeline {
             yamlFile '.jenkins-pod.yaml'
         }
     }
+    environment {
+    	GOCACHE = "/tmp"
+    }
     triggers {
         cron('H * * * *')
     }
@@ -27,5 +30,7 @@ pipeline {
                 sh 'go build'
             }
         }
+	
+	
     }
 }
