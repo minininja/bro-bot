@@ -1,16 +1,10 @@
 pipeline {
-    agent any
-    tools {
-        go '1.13.8'
-    }
-    environment {
-        GO111MODULE = 'on'
-    }
+    agent { docker { image 'golang:1.14-alpine3.11' } }
     stages {
-        state('Compile') {
-	        steps {
-	        	sh "go build"
-	        }
+        stage("build") {
+            steps {
+                go build
+            }
         }
     }
 }
