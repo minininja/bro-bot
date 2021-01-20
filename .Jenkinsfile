@@ -1,9 +1,20 @@
+
 pipeline {
-    agent { kubernetes { image 'golang:1.14-alpine3.11' } }
+    agent {
+        kubernetes {
+            yamlFile 'jenkins-pod.yaml'
+        }
+    }
+    triggers {
+        cron('H * * * *')
+    }
+    tools {
+        go '1.13.15' 
+    }
     stages {
-        stage("build") {
+        stage('Main') {
             steps {
-                go build
+                sh 'go build'
             }
         }
     }
