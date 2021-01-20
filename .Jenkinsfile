@@ -36,11 +36,12 @@ pipeline {
 	stage('Package') {
 		steps {
 			script {
-				dockerImage = docker.build imageName
+				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageName}:${env.BUILD_ID}"
 			}
 		}
 	}
 
+/*
 	stage('Docker Push') {
 		steps {
 			echo "Pushing"
@@ -58,6 +59,6 @@ pipeline {
 			echo "Deploying"
 		}
 	}
-
+*/
     }
 }
