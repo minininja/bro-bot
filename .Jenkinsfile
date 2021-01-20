@@ -14,6 +14,7 @@ pipeline {
     stages {
         stage('Main') {
             steps {
+                sh 'go get ./...'
                 sh 'go build'
             }
         }
