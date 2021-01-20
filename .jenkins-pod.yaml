@@ -9,15 +9,15 @@ spec:
     workingDir: /home/jenkins
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: IfNotPresent
-    command:
-    - /busybox/cat
-    tty: true
     volumeMounts:
       - name: docker-config
         mountPath: /kaniko/.docker
         readOnly: true
+    command:
+    - /busybox/cat
+    tty: true
   volumes:
-  - name: docker-config
-    secret:
-      secretName: mikej091-docker
+    - name: docker-config
+      secret:
+        secretName: mikej091-docker
   restartPolicy: Never
