@@ -12,9 +12,13 @@ pipeline {
         go '1.13.15' 
     }
     stages {
+        stage('Dependencies') {
+            steps {
+                sh "GOPATH=`pwd` go get ./...'
+            }
+        }
         stage('Main') {
             steps {
-                sh 'GOPATH=`pwd` go get ./...'
                 sh 'go build'
             }
         }
