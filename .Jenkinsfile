@@ -33,7 +33,9 @@ pipeline {
 	
 	stage('Package') {
 		steps {
-			echo "Packaging"
+			node {
+				def customImage = docker.build('test:${env.BUILD_ID}, '-f Dockerfile')
+			}
 		}
 	}
 
