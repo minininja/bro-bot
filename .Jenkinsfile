@@ -22,6 +22,8 @@ pipeline {
 		steps {
 			echo 'env'
 			sh 'env'
+			echo 'pwd'
+			sh 'pwd'
 			echo 'ls'
 			sh 'ls'
 			echo 'ls /kaniko'
