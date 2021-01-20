@@ -35,14 +35,20 @@ pipeline {
 			sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
 			sh 'go get -u github.com/bwmarrin/discordgo'
 			sh 'go build'
+			sh 'ls -l'
 		}
         }
 	
 	stage('Package') {
 		steps {
+			container(name: 'kaniko', shell: '/busybox/sh')  {
+				sh '/kaniko/executor --context `pwd` --verbosity debug --destination=${imageName}:${env.BUILD_ID}'
+			}
+			/*
 			script {
 				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageName}:${env.BUILD_ID}"
 			}
+			*/
 		}
 	}
 
