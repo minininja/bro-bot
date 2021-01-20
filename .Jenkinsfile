@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Dependencies') {
             steps {
-                sh "GOPATH=`pwd` go get ./...'
+                sh 'GOPATH=`pwd` go get ./...'
             }
         }
         stage('Main') {
