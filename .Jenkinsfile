@@ -13,6 +13,7 @@ pipeline {
     }
     tools {
         go '1.13.15' 
+	docker 'latest'
     }
     stages {
     
