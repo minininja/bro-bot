@@ -22,10 +22,10 @@ pipeline {
 		steps {
 			echo 'env'
 			sh 'env'
-			echo 'pwd'
-			sh 'pwd'
-			echo 'find'
-			sh 'find / -print'
+			// echo 'pwd'
+			// sh 'pwd'
+			// echo 'find'
+			// sh 'find / -print'
 		}
 	}
 
