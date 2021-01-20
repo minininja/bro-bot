@@ -13,20 +13,15 @@ pipeline {
     }
     stages {
     
-         stage('Pre Test') {
+         stage('Dependencies') {
             steps {
                 echo 'Installing dependencies'
                 sh 'go version'
-                sh 'go get -u'
+                sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
+	            sh 'go get -u github.com/bwmarrin/discordgo'
             }
         }
-/*
-        stage('Dependencies') {
-            steps {
-                sh 'GOPATH=`pwd` go get ./...'
-            }
-        }
-*/
+
         stage('Main') {
             steps {
                 sh 'go build'
