@@ -36,7 +36,7 @@ pipeline {
 	stage('Package') {
 		steps {
 			script {
-				sh "executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageName}:${env.BUILD_ID}"
+				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=${imageName}:${env.BUILD_ID}"
 			}
 		}
 	}
