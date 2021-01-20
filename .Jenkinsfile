@@ -16,21 +16,32 @@ pipeline {
     }
     stages {
     
-         stage('Dependencies') {
-            steps {
-                echo 'Installing dependencies'
-                sh 'go version'
-                sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
-	            sh 'go get -u github.com/bwmarrin/discordgo'
-            }
-        }
+    	stage('Debug') {
+		steps {
+			sh 'env'
+		}
+	}
 
-        stage('Main') {
-            steps {
-                sh 'go build'
-            }
+        stage('Build') {
+		steps {
+			echo "Building"
+			sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
+			sh 'go get -u github.com/bwmarrin/discordgo'
+			sh 'go build'
+		}
         }
 	
-	
+	stage('Package') {
+		steps {
+			echo "Packaging"
+		}
+	}
+
+	stage('Deploy') {
+		steps {
+			echo "Deploying"
+		}
+	}
+
     }
 }
