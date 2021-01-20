@@ -7,6 +7,8 @@ pipeline {
     }
     environment {
     	GOCACHE = "/tmp"
+	dockerImage = ''
+	imageName = 'mikej091/go-discord-bro-bot'
     }
     triggers {
         cron('H * * * *')
@@ -34,13 +36,24 @@ pipeline {
 	stage('Package') {
 		steps {
 			script {
-				docker.build("mikej091/go-discord-bro-bot:${env.BUILD_ID}")
-				// docker.build("mikej091/go-discord-bro-bot:latest")
+				dockerImage = docker.build imageName
 			}
 		}
 	}
 
-	stage('Deploy') {
+	stage('Docker Push') {
+		steps {
+			echo "Pushing"
+			script {
+				docker.withRegistry('', registryCredential) {
+					dockerImage.push("$BUILD_NUMBER")
+					dockerImage.push('latest')
+				}
+			}
+		}
+	}
+
+	stage('Deploying') {
 		steps {
 			echo "Deploying"
 		}
