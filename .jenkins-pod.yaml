@@ -10,7 +10,7 @@ spec:
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: IfNotPresent
     env:
-      - name: dockerhub-secret
+      - name: dockerauth
         value from:
           secretKeyRef:
             name: mikej091-docker
