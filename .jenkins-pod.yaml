@@ -3,7 +3,10 @@ metadata:
   name: jenkins-agent
 spec:
   containers:
+  - name: jnlp
+    workingDir: /home/jenkins
   - name: kaniko
+    workingDir: /home/jenkins
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: IfNotPresent
     command:
