@@ -37,8 +37,8 @@ pipeline {
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
                                 withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
-                                        auth = sh 'echo -n ${dockerhubauth} | base64'
-                                        config = [
+                                        def auth = sh 'echo -n ${dockerhubauth} | base64'
+                                        def config = [
                                                 auths: [
                                                         "https://index.docker.io/v1": auth
                                                 ]
