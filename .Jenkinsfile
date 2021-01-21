@@ -36,6 +36,7 @@ pipeline {
 		}
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
+				sh 'echo -n ${dockerhubauth}  | base64'
                                 withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
 				/*
                                         def auth = sh 'echo -n ${dockerhubauth} | base64'
@@ -47,7 +48,7 @@ pipeline {
 				*/
                                         writeJSON file: "${WORKSPACE}/config.json", json: [
                                                 auths: [
-                                                        "https://index.docker.io/v1": Base64Coder.encodeString(dockerhubauth)
+                                                        "https://index.docker.io/v1": sh script: 'echo -n ${dockerhubauth}  | base64' returnStdout: true
                                                 ]
                                         ]
                                         sh 'ls $WORKSPACE'
