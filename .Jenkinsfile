@@ -36,7 +36,7 @@ pipeline {
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
 				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerauth')]) {
-					auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
+					def auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
 					writeFile file: 'config.json', text: '''{
   						"auths": {
     							"https://index.docker.io/v1": auth
