@@ -38,7 +38,7 @@ pipeline {
 			// sh 'sleep 3600'
 			container(name: 'kaniko', shell: '/busybox/sh')  {
 				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
-					writeFile file: "${WORKSPACE}/config.json", text: '{ "auths": { "https://index.docker.io/v1/": { "auth": "${dockerhubauth}" } } }'
+					writeFile file: "${WORKSPACE}/config.json", text: '{ "auths": { "https://index.docker.io/v1/": { "auth": "${env.dockerhubauth}" } } }'
 					sh 'ls $WORKSPACE'
 					sh 'cat $WORKSPACE/config.json'
 					sh 'sleep 3600'
