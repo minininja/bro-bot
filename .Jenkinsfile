@@ -32,6 +32,7 @@ pipeline {
 	stage('Package and Push') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
+			auth = ''
 		}
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
