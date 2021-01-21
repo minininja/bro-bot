@@ -32,21 +32,25 @@ pipeline {
 	stage('Package and Push') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
+			SECRET = credentials('dockerhub-auth')
 		}
 		steps {
 			// sh 'env'
 			// sh 'sleep 3600'
 			container(name: 'kaniko', shell: '/busybox/sh')  {
-				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
-					writeFile file: "${WORKSPACE}/config.json", text: '{ "auths": { "https://index.docker.io/v1/": { "auth": "${env.dockerhubauth}" } } }'
-					sh 'ls $WORKSPACE'
-					sh 'cat $WORKSPACE/config.json'
-					// sh 'sleep 3600'
-          				sh '''#!/busybox/sh
-					        export DOCKER_CONFIG=${WORKSPACE}
-	            				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-	          			'''
-				}
+				creds = sh 'echo -n $SECRET | base64'
+				def config = [
+					auths: [
+						"https://index.docker.io/v1":  creds
+					]
+				]
+				writeJSON file: "${WORKSPACE}/config.json", json: config
+				sh 'cat $WORKSPACE/config.json'
+				// sh 'sleep 3600'
+				sh '''#!/busybox/sh
+					export DOCKER_CONFIG=${WORKSPACE}
+					/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+				'''
 			}
 		}
 	}
