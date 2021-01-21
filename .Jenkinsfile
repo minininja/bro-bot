@@ -35,23 +35,24 @@ pipeline {
 			SECRET = credentials('dockerhub-auth')
 		}
 		steps {
-			// sh 'env'
-			// sh 'sleep 3600'
-			container(name: 'kaniko', shell: '/busybox/sh')  {
-				creds = sh 'echo -n $SECRET | base64'
-				def config = [
-					auths: [
-						"https://index.docker.io/v1":  creds
-					]
-				]
-				writeJSON file: "${WORKSPACE}/config.json", json: config
-				sh 'cat $WORKSPACE/config.json'
-				// sh 'sleep 3600'
-				sh '''#!/busybox/sh
-					export DOCKER_CONFIG=${WORKSPACE}
-					/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-				'''
-			}
+                        container(name: 'kaniko', shell: '/busybox/sh')  {
+                                withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
+                                        auth = sh 'echo -n ${dockerhubauth} | base64'
+                                        config = [
+                                                auths: [
+                                                        "https://index.docker.io/v1": auth
+                                                ]
+                                        ]
+                                        writeJSON file: "${WORKSPACE}/config.json", json: config
+                                        sh 'ls $WORKSPACE'
+                                        sh 'cat $WORKSPACE/config.json'
+                                        // sh 'sleep 3600'
+                                        sh '''#!/busybox/sh
+                                                export DOCKER_CONFIG=${WORKSPACE}
+                                                /kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+                                        '''
+                                }
+                        }
 		}
 	}
 
