@@ -36,12 +36,14 @@ pipeline {
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
 				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerauth')]) {
+					echo 'preparing to package, creating config file'
 					def auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
 					writeFile file: 'config.json', text: '''{
   						"auths": {
     							"https://index.docker.io/v1": auth
   						}
 					}'''
+					echo 'creating container'
 					sh 'ls $WORKSPACE'
 					sh 'cat $WORKSPACE/config.json'
 					// sh 'sleep 3600'
