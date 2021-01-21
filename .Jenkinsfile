@@ -32,32 +32,24 @@ pipeline {
 	stage('Package and Push') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
-			SECRET = credentials('dockerhub-auth')
 		}
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
-				
-				sh( script: 'echo -n ${SECRET}  | base64', returnStdout: true)
-				/*
-				def auth = sh 'echo -n ${SECRET} | base64'
-				def config = [
-					auths: [
-						"https://index.docker.io/v1": auth
-					]
-				]
-				*/
-				writeJSON file: "${WORKSPACE}/config.json", json: [
-					auths: [
-						"https://index.docker.io/v1": SECRET
-					]
-				]
-				sh 'ls $WORKSPACE'
-				sh 'cat $WORKSPACE/config.json'
-				// sh 'sleep 3600'
-				sh '''#!/busybox/sh
-					export DOCKER_CONFIG=${WORKSPACE}
-					/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-				'''
+				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerauth')]) {
+					auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
+					writeFile file: 'config.json', text: '''{
+  						"auths": {
+    							"https://index.docker.io/v1": auth
+  						}
+					}'''
+					sh 'ls $WORKSPACE'
+					sh 'cat $WORKSPACE/config.json'
+					// sh 'sleep 3600'
+					sh '''#!/busybox/sh
+						export DOCKER_CONFIG=${WORKSPACE}
+						/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+					'''
+				}
                         }
 		}
 	}
