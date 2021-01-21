@@ -42,7 +42,7 @@ pipeline {
 						auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
 						writeFile file: 'config.json', text: '''{
 							"auths": {
-								"https://index.docker.io/v1": auth
+								"https://index.docker.io/v1": "${auth}"
 							}
 						}'''
 					}
