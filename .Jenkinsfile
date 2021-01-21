@@ -37,7 +37,7 @@ pipeline {
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
 				
-				def auth = sh( script: 'echo -n ${SECRET}  | base64', returnStdout: true)
+				sh( script: 'echo -n ${SECRET}  | base64', returnStdout: true)
 				/*
 				def auth = sh 'echo -n ${SECRET} | base64'
 				def config = [
@@ -48,7 +48,7 @@ pipeline {
 				*/
 				writeJSON file: "${WORKSPACE}/config.json", json: [
 					auths: [
-						"https://index.docker.io/v1": auth
+						"https://index.docker.io/v1": SECRET
 					]
 				]
 				sh 'ls $WORKSPACE'
