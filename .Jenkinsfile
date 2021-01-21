@@ -41,6 +41,7 @@ pipeline {
 					writeFile file: "${WORKSPACE}/config.json", text: '{ "auths": { "https://index.docker.io/v1/": { "auth": "${dockerhubauth}" } } }'
 					sh 'ls $WORKSPACE'
 					sh 'cat $WORKSPACE/config.json'
+					sh 'sleep 3600'
           				sh '''#!/busybox/sh
 					        export DOCKER_CONFIG=${WORKSPACE}
 	            				/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
