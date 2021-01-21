@@ -37,29 +37,27 @@ pipeline {
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
 				
-                                withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerhubauth')]) {
-					def auth = sh( script: 'echo -n ${dockerhubauth}  | base64', returnStdout: true)
+				def auth = sh( script: 'echo -n ${dockerhubauth}  | base64', returnStdout: true)
 				/*
-                                        def auth = sh 'echo -n ${dockerhubauth} | base64'
-                                        def config = [
-                                                auths: [
-                                                        "https://index.docker.io/v1": auth
-                                                ]
-                                        ]
+				def auth = sh 'echo -n ${dockerhubauth} | base64'
+				def config = [
+					auths: [
+						"https://index.docker.io/v1": auth
+					]
+				]
 				*/
-                                        writeJSON file: "${WORKSPACE}/config.json", json: [
-                                                auths: [
-                                                        "https://index.docker.io/v1": auth
-                                                ]
-                                        ]
-                                        sh 'ls $WORKSPACE'
-                                        sh 'cat $WORKSPACE/config.json'
-                                        // sh 'sleep 3600'
-                                        sh '''#!/busybox/sh
-                                                export DOCKER_CONFIG=${WORKSPACE}
-                                                /kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-                                        '''
-                                }
+				writeJSON file: "${WORKSPACE}/config.json", json: [
+					auths: [
+						"https://index.docker.io/v1": auth
+					]
+				]
+				sh 'ls $WORKSPACE'
+				sh 'cat $WORKSPACE/config.json'
+				// sh 'sleep 3600'
+				sh '''#!/busybox/sh
+					export DOCKER_CONFIG=${WORKSPACE}
+					/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+				'''
                         }
 		}
 	}
