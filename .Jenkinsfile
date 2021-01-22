@@ -43,12 +43,6 @@ pipeline {
 						writeFile file: 'config.json', text: "{ \"auths\": { \"https://index.docker.io/v1\": \"${auth.trim()}\" } }"
 					}
 					echo 'creating container'
-					echo '''#!/busybox/sh
-						export DOCKER_CONFIG=${WORKSPACE}
-						/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-					'''
-					
-					sh 'sleep 3600'
 					sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/app:${env.BUILD_ID}"
 				}
                         }
