@@ -47,11 +47,9 @@ pipeline {
 						export DOCKER_CONFIG=${WORKSPACE}
 						/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 					'''
+					
 					sh 'sleep 3600'
-					sh '''#!/busybox/sh
-						export DOCKER_CONFIG=${WORKSPACE}
-						/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-					'''
+					sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/app:${env.BUILD_ID}"
 				}
                         }
 		}
