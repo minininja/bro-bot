@@ -40,7 +40,7 @@ pipeline {
 					echo 'preparing to package, creating config file'
 					script {
 						auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
-						writeFile file: 'config.json', text: "{ \"auths\": { \"https://index.docker.io/v1\": \"${auth.trim()}\" } }"
+						writeFile file: 'config.json', text: "{ \"auths\": { \"https://index.docker.io/v1\": { \"auth\": \"${auth.trim()}\" } } }"
 					}
 					
 					echo 'creating container'
