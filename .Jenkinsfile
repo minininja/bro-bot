@@ -44,10 +44,10 @@ pipeline {
 					}
 					
 					echo 'creating container'
-					echo "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/go-discord-bro-bot:${env.BUILD_ID}"
-					sh "sleep 3600"
-					sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/go-discord-bro-bot:${env.BUILD_ID}"
-				}
+					sh '''#!/busybox/sh
+						export DOCKER_CONFIG=${WORKSPACE}
+						/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+					'''				}
                         }
 		}
 	}
