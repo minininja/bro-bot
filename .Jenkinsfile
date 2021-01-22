@@ -45,8 +45,7 @@ pipeline {
 					
 					echo 'creating container'
 					sh '''#!/busybox/sh
-						export DOCKER_CONFIG=${WORKSPACE}
-						/kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+						DOCKER_CONFIG=${WORKSPACE} /kaniko/executor --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 					'''				}
                         }
 		}
