@@ -42,8 +42,10 @@ pipeline {
 						auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
 						writeFile file: 'config.json', text: "{ \"auths\": { \"https://index.docker.io/v1\": \"${auth.trim()}\" } }"
 					}
+					
 					echo 'creating container'
-					sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/app:${env.BUILD_ID}"
+					echo "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/go-discord-bro-bot:${env.BUILD_ID}"
+					sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=mikej091/go-discord-bro-bot:${env.BUILD_ID}"
 				}
                         }
 		}
