@@ -40,9 +40,7 @@ pipeline {
 					echo 'preparing to package, creating config file'
 					script {
 						auth = sh returnStdout: true, script: 'echo -n $dockerauth | base64'
-						json = [ auths: [ "https://index.docker.io/v1": auth ] ]
-						writeJSON file: 'config.json', json: json
-						// writeFile file: 'config.json', text: '{ "auths": { "https://index.docker.io/v1": "${auth}" } }'
+						writeFile file: 'config.json', text: "{ \"auths\": { \"https://index.docker.io/v1\": \"${auth}\" } }"
 					}
 					echo 'creating container'
 					sh 'ls $WORKSPACE'
