@@ -35,7 +35,7 @@ pipeline {
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
 				sh '''#!/busybox/sh
-					/kaniko/executor --verbosity trace --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+					/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 				'''
                         }
 		}
