@@ -44,6 +44,11 @@ pipeline {
 					}
 					
 					echo 'creating container'
+					echo '''#!/busybox/sh
+					        #!//bin/sh
+						export DOCKER_CONFIG=${WORKSPACE}
+						/kaniko/executor --verbosity trace --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+					'''				}
 					sh "sleep 3600"
 					sh '''#!/busybox/sh
 					        #!//bin/sh
