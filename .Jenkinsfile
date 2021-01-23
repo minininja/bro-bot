@@ -44,17 +44,17 @@ pipeline {
 					}
 					
 					echo 'creating container'
-					echo '''#!/busybox/sh
-					        #!//bin/sh
-						export DOCKER_CONFIG=${WORKSPACE}
-						/kaniko/executor --verbosity trace --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+					sh '''#!/busybox/sh
+					        pwd
+						export DOCKER_CONFIG=`pwd`
+						/kaniko/executor --verbosity trace --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 					'''
 					sh 'pwd'
-					sh "sleep 3600"
+					// sh "sleep 3600"
 					sh '''#!/busybox/sh
-					        #!//bin/sh
-						export DOCKER_CONFIG=${WORKSPACE}
-						/kaniko/executor --verbosity trace --dockerfile $WORKSPACE/Dockerfile --context $WORKSPACE --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+					        pwd
+						export DOCKER_CONFIG=`pwd`
+						/kaniko/executor --verbosity trace --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 					'''
 				}
                         }
