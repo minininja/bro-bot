@@ -1,25 +1,20 @@
+apiVersion: v1
 kind: Pod
 metadata:
   name: jenkins-agent
 spec:
-
-containers:
-  - name: jnlp
-    workingDir: /home/jenkins
+  containers:
   - name: kaniko
-    workingDir: /home/jenkins
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: IfNotPresent
-    volumeMounts:
-      - name: docker-config
-        mountPath: /kaniko/.docker
     command:
-      - /busybox/cat
+    - /busybox/cat
     tty: true
-
-volumes:
+    volumeMounts:
     - name: docker-config
-      secret:
-        secretName: mikej091-docker
-
+      mountPath: /kaniko/.docker
+  volumes:
+  - name: docker-config
+    secret:  
+      secretName: mikej091-docker
   restartPolicy: Never
