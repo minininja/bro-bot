@@ -27,7 +27,7 @@ pipeline {
 		}
         }
 	
-	stage('Package and Push') {
+	stage('Package and push latest') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
 			auth = ''
@@ -41,7 +41,7 @@ pipeline {
 		}
 	}
 
-	stage('Deploying') {
+	stage('Deploy latest') {
 		steps {
 			script {
 				kubernetesDeploy(configs: "bot-deploy.yaml", kubeconfigId: "kubeconfig")
@@ -49,5 +49,18 @@ pipeline {
 		}
 	}
 
+	stage('Package and push buildnumber') {
+		environment {
+			PATH = "/busybox:/kaniko:$PATH"
+			auth = ''
+		}
+		steps {
+                        container(name: 'kaniko', shell: '/busybox/sh')  {
+				sh '''#!/busybox/sh
+					/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:${env.BUILD_NUMBER}
+				'''
+                        }
+		}
+	}
     }
 }
