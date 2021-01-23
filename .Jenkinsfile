@@ -53,6 +53,7 @@ pipeline {
 					// sh "sleep 3600"
 					sh '''#!/busybox/sh
 					        pwd
+						ls /kaniko/.docker
 						# export DOCKER_CONFIG=`pwd`
 						/kaniko/executor --verbosity trace --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
 					'''
