@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: brobot
-        image: mikej091/brobot:latest
+        image: mikej091/go-discord-bro-bot:latest
         command:
         - go-discord-bro-bot
         env:
