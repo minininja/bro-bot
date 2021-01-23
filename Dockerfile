@@ -1,5 +1,5 @@
 # FROM ubuntu
 FROM kalaksi/ca-certificates
-# RUN apt update -q && apt install ca-certificates -y
+RUN update-ca-certificates
 ADD go-discord-bro-bot go-discord-bro-bot
 CMD ["./go-discord-bro-bot"]
