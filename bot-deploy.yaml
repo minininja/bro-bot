@@ -20,8 +20,7 @@ spec:
         image: mikej091/go-discord-bro-bot:latest
         command:
         - sleep
-        args:
-        - 3600
+        args: ['3600']
         env:
         - name: DG_TOKEN
           valueFrom:  
