@@ -19,7 +19,7 @@ spec:
       - name: brobot
         image: mikej091/go-discord-bro-bot:latest
         command:
-        - go-discord-bro-bot
+        - /go-discord-bro-bot
         env:
         - name: DG_TOKEN
           valueFrom:  
