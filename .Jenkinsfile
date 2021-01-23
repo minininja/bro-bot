@@ -43,7 +43,9 @@ pipeline {
 
 	stage('Deploying') {
 		steps {
-			echo "Deploying"
+			script {
+				kubernetesDeploy(configs: "brobot-deploy.yaml", kubeconfigId: "kubeconfg")
+			}
 		}
 	}
 
