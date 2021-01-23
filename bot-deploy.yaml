@@ -21,7 +21,7 @@ spec:
         command:
         - go-discord-bro-bot
         env:
-        - name: DGTOKEN
+        - name: DG_TOKEN
           valueFrom:  
             secreateKeyRef:
               name: brobot-token
