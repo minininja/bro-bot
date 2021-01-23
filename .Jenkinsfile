@@ -20,12 +20,10 @@ pipeline {
         stage('Build') {
 		steps {
 			echo "Building"
-			// sh 'env'
 			sh 'go get -u github.com/Necroforger/dgrouter/exrouter'
 			sh 'go get -u github.com/bwmarrin/discordgo'
 			sh 'go build'
 			sh 'mv $WORKSPACE/bro-bot $WORKSPACE/go-discord-bro-bot'
-			sh 'ls -l'
 		}
         }
 	
@@ -36,12 +34,9 @@ pipeline {
 		}
 		steps {
                         container(name: 'kaniko', shell: '/busybox/sh')  {
-				withCredentials([string(credentialsId: 'dockerhub-auth', variable: 'dockerauth')]) {
-					sh "sleep 3600"
-					sh '''#!/busybox/sh
-						/kaniko/executor --verbosity trace --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-					'''
-				}
+				sh '''#!/busybox/sh
+					/kaniko/executor --verbosity trace --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
+				'''
                         }
 		}
 	}
