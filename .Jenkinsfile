@@ -32,7 +32,7 @@ pipeline {
 		steps {
             container(name: 'kaniko', shell: '/busybox/sh')  {
                 sh "env"
-				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:build-${BUILD_NBR}"
+				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:build-${env.BUILD_ID}"
 				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest"
             }
 		}
@@ -42,27 +42,9 @@ pipeline {
 	stage('Deploy latest') {
 		steps {
 			script {
-			    sh "sed -i 's/latest/build-${BUILD_NBR}/g' bot-deploy.yaml"
+			    sh "sed -i 's/latest/build-${env.BUILD_ID}/g' bot-deploy.yaml"
 				kubernetesDeploy(configs: "bot-deploy.yaml", kubeconfigId: "kubeconfig")
 			}
 		}
 	}
-
-	/*
-	// doesn't work right now
-	stage('Package and push buildnumber') {
-		environment {
-			PATH = "/busybox:/kaniko:$PATH"
-			auth = ''
-		}
-		steps {
-                        container(name: 'kaniko', shell: '/busybox/sh')  {
-				sh '''#!/busybox/sh
-					/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:${env.BUILD_NUMBER}
-				'''
-                        }
-		}
-	}
-	*/
-    }
 }
