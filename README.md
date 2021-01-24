@@ -9,14 +9,17 @@ The activation words and channels are listed below.
 
 ### !bro
 Channel: bro
+
 Picks a random mesage from the first 100 and repeats it
 
 ### !broette
 Channel: broette
+
 Picks a random mesage from the first 100 and repeats it
 
 ### !scarporen
 Channel: scarporen
+
 Picks a random mesage from the first 100 and repeats it
 
 ### !brah
