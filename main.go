@@ -90,7 +90,12 @@ func main() {
 		}
 
 		sentMessage := false
+		var brahChannel *discordgo.Channel = nil
 		for _, channel := range channels {
+			if channel.Name == "brah" {
+				brahChannel = channel
+			}
+			
 			if channel.Name == channelName {
 				// read the messages and spit them back out in reverse order
 				messages, err := discord.ChannelMessages(channel.ID, 100, "", "", "")
@@ -106,8 +111,23 @@ func main() {
 				}
 			}
 		}
+		
 		if !sentMessage {
-			ctx.Reply("Sorry, I don't know anything about that.")
+			if nil == brahChannel {
+				ctx.Reply("Sorry brah, I don't know anything about that.")
+			} else {
+				messages, err := discord.ChannelMessages(brahChannel.ID, 100, "", "", "")
+
+				if nil != err {
+					log.Print("error reading messages: " + err.Error())
+					return
+				}
+
+				sentMessage = true
+				for i := len(messages) - 1; i >= 0; i-- {
+					ctx.Reply(messages[i].Content)
+				}
+			}
 		}
 	})
 
