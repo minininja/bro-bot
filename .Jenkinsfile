@@ -10,11 +10,8 @@ pipeline {
 	dockerImage = ''
 	imageName = 'mikej091/go-discord-bro-bot'
     }
-    triggers {
-        cron('H * * * *')
-    }
     tools {
-        go '1.13.15' 
+        go '1.13.8' 
     }
     stages {
         stage('Build') {
