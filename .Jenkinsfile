@@ -30,17 +30,18 @@ pipeline {
 			auth = ''
 		}
 		steps {
-                        container(name: 'kaniko', shell: '/busybox/sh')  {
-				sh '''#!/busybox/sh
-					/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest
-				'''
-                        }
+            container(name: 'kaniko', shell: '/busybox/sh')  {
+				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:build-${env.BUILD_NBR}"
+				sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest"
+            }
 		}
 	}
+
 
 	stage('Deploy latest') {
 		steps {
 			script {
+			    sh "sed -i 's/latest/build-${env.BUILD_NBR}/g' bot-deploy.yaml"
 				kubernetesDeploy(configs: "bot-deploy.yaml", kubeconfigId: "kubeconfig")
 			}
 		}
