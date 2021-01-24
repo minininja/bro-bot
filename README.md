@@ -40,6 +40,7 @@ and not visible to your general user.
 - support for embedded images
 - tests
 - get better with golang
+- "fixture" loader for default content/channels
 
 
 
