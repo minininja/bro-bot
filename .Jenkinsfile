@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     sh "sed -i 's/latest/build-${BUILD_NBR}/g' bot-deploy.yaml"
-                    kubernetesDeployconfigs: "bot-deploy.yaml", kubeconfigId: "kubeconfig"
+                    kubernetesDeploy configs: "bot-deploy.yaml", kubeconfigId: "kubeconfig"
                 }
             }
         }
