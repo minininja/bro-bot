@@ -6,9 +6,9 @@ import (
 	"github.com/Necroforger/dgrouter/exrouter"
 	"github.com/bwmarrin/discordgo"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
-	"math/rand"
 	"time"
 )
 
@@ -43,6 +43,46 @@ func convertToChannel(ctx *exrouter.Context) string {
 		result = "brah-" + strings.Join(content[1:], "-")
 	}
 	return result
+}
+
+func parrotChannel(dg *discordgo.Session, channel *discordgo.Channel, ctx *exrouter.Context) bool {
+	sent := false
+
+	messages, err := dg.ChannelMessages(channel.ID, 100, "", "", "")
+	if nil != err {
+		log.Print("error reading messages: " + err.Error())
+	} else {
+		for i := len(messages) - 1; i >= 0; i-- {
+			ctx.Reply(messages[i].Content)
+		}
+		sent = true
+	}
+
+	return sent
+}
+
+func randomPickAndSend(dg *discordgo.Session, channelName string, ctx *exrouter.Context) {
+
+	channels, err := dg.GuildChannels(ctx.Msg.GuildID)
+	if nil != err {
+		log.Print("error reading channels: " + err.Error())
+		return
+	}
+	for _, channel := range channels {
+		log.Printf("looking at channel %s", channel.Name)
+		if channel.Name == channelName {
+			messages, err := dg.ChannelMessages(channel.ID, 100, "", "", "")
+			if nil != err {
+				log.Print("error reading messages: " + err.Error())
+			} else {
+				source := rand.NewSource(time.Now().UnixNano())
+				generator := rand.New(source)
+				pos := generator.Intn(len(messages))
+				ctx.Reply(messages[pos].Content)
+			}
+			return
+		}
+	}
 }
 
 func main() {
@@ -95,134 +135,34 @@ func main() {
 			if channel.Name == "brah" {
 				brahChannel = channel
 			}
-			
+
 			if channel.Name == channelName {
-				// read the messages and spit them back out in reverse order
-				messages, err := discord.ChannelMessages(channel.ID, 100, "", "", "")
-
-				if nil != err {
-					log.Print("error reading messages: " + err.Error())
-					return
-				}
-
-				sentMessage = true
-				for i := len(messages) - 1; i >= 0; i-- {
-					ctx.Reply(messages[i].Content)
-				}
+				sentMessage = parrotChannel(discord, channel, ctx)
 			}
 		}
-		
+
 		if !sentMessage {
 			if nil == brahChannel {
 				ctx.Reply("Sorry brah, I don't know anything about that.")
 			} else {
-				messages, err := discord.ChannelMessages(brahChannel.ID, 100, "", "", "")
-
-				if nil != err {
-					log.Print("error reading messages: " + err.Error())
-					return
-				}
-
-				sentMessage = true
-				for i := len(messages) - 1; i >= 0; i-- {
-					ctx.Reply(messages[i].Content)
-				}
+				parrotChannel(discord, brahChannel, ctx)
 			}
 		}
 	})
 
 	router.On("broette", func(ctx *exrouter.Context) {
 		log.Print(ctx.Msg.Content)
-
-		channels, err := discord.GuildChannels(ctx.Msg.GuildID)
-		if nil != err {
-			log.Print("error reading channels: " + err.Error())
-			return
-		}
-		for _, channel := range channels {
-			log.Printf("looking at channel %s", channel.Name)
-			if channel.Name == "broette" {
-				if channel.ID != ctx.Msg.ChannelID {
-					messages, err := discord.ChannelMessages(channel.ID, 100, "", "", "")
-
-					if len(messages) > 0 {
-						if nil != err {
-							log.Print("error reading messages: " + err.Error())
-							return
-						}
-						source := rand.NewSource(time.Now().UnixNano())
-						generator := rand.New(source)
-
-						pos := generator.Intn(len(messages))
-						ctx.Reply(messages[pos].Content)
-					}
-					return
-				}
-			}
-		}
+		randomPickAndSend(discord, "broette", ctx)
 	})
 
 	router.On("bro", func(ctx *exrouter.Context) {
 		log.Print(ctx.Msg.Content)
-
-            channels, err := discord.GuildChannels(ctx.Msg.GuildID)
-            if nil != err {
-                log.Print("error reading channels: " + err.Error())
-                return
-            }
-    		for _, channel := range channels {
-                log.Printf("looking at channel %s", channel.Name)
-                if channel.Name == "bro" {
-                    if channel.ID != ctx.Msg.ChannelID {
-                        messages, err := discord.ChannelMessages(channel.ID, 100, "", "", "")
-
-                        if len(messages) > 0 {
-							if nil != err {
-								log.Print("error reading messages: " + err.Error())
-								return
-							}
-							source := rand.NewSource(time.Now().UnixNano())
-							generator := rand.New(source)
-
-							pos := generator.Intn(len(messages))
-							ctx.Reply(messages[pos].Content)
-						}
-                        return
-                    }
-                }
-            }
+		randomPickAndSend(discord, "bro", ctx)
 	})
 
 	router.On("scarporen", func(ctx *exrouter.Context) {
 		log.Print(ctx.Msg.Content)
-
-		channels, err := discord.GuildChannels(ctx.Msg.GuildID)
-		if nil != err {
-			log.Print("error reading channels: " + err.Error())
-			return
-		}
-		for _, channel := range channels {
-			log.Printf("looking at channel %s", channel.Name)
-			if channel.Name == "scarporen" {
-				if channel.ID != ctx.Msg.ChannelID {
-					messages, err := discord.ChannelMessages(channel.ID, 100, "", "", "")
-
-					if len(messages) > 0 {
-						if nil != err {
-							log.Print("error reading messages: " + err.Error())
-							return
-						}
-						source := rand.NewSource(time.Now().UnixNano())
-						generator := rand.New(source)
-
-						pos := generator.Intn(len(messages))
-						ctx.Reply(messages[pos].Content)
-					}
-					return
-				}
-			}
-		}
-
+		randomPickAndSend(discord, "scarporen", ctx)
 	})
 
 	// add the router as a handler
