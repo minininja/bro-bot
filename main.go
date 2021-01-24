@@ -35,6 +35,16 @@ func init() {
 	flag.BoolVar(&debug, "debug", false, "Enable debug message logger mode")
 }
 
+func convertToChannel(ctx *exrouter.Context) string {
+	result := ""
+	content := strings.Split(ctx.Msg.Content, " ")
+	if len(content) >= 2 {
+		// ignore the first part and combine the rest
+		result = strings.Join(content[1:], "-")
+	}
+	return result
+}
+
 func main() {
 	flag.Parse()
 
@@ -66,6 +76,40 @@ func main() {
 	})
 	// create the router
 	router := exrouter.New()
+
+	router.On("brah", func(ctx *exrouter.Context) {
+		log.Print(ctx.Msg.Content)
+		channelName := convertToChannel(ctx)
+		log.Print("derived channel " + channelName)
+
+		channels, err := discord.GuildChannels(ctx.Msg.GuildID)
+
+		if nil != err {
+			log.Print("error reading channels: " + err.Error())
+			return
+		}
+
+		sentMessage := false
+		for _, channel := range channels {
+			if channel.Name == channelName {
+				// read the messages and spit them back out in reverse order
+				messages, err := discord.ChannelMessages(channel.ID, 100, "", "", "")
+
+				if nil != err {
+					log.Print("error reading messages: " + err.Error())
+					return
+				}
+
+				sentMessage = true
+				for i := len(messages) - 1; i >= 0; i-- {
+					ctx.Reply(messages[i].Content)
+				}
+			}
+		}
+		if !sentMessage {
+			ctx.Reply("Sorry, I don't know anything about that.")
+		}
+	})
 
 	router.On("broette", func(ctx *exrouter.Context) {
 		log.Print(ctx.Msg.Content)
