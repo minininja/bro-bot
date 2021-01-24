@@ -1,6 +1,11 @@
 #Bro bot
 
-Work in process, use it at your own risk.  It's a sort of parrot bot in that it repeats content from other channels. The activation words and channels are listed below.  
+Work in process, use it at your own risk.  It's a sort of parrot bot in that it 
+repeats content from other channels.  The genesis of this was to build a sort of 
+replacement for hivemind when it was taken down.  But rather than build a system 
+store/maintain the content behind the bot we use discord channels instead.
+
+The activation words and channels are listed below.  
 
 ### !bro
 Channel: bro
@@ -23,9 +28,18 @@ read the first 100 messages from that channel and repeat them back.
 
 ### ***Note:***
 Don't use any of the commands in the channels referenced by the command or 
-the bot will activate on itself (yes I could prevent this but I'm lazy).
+the bot will activate on itself (yes I could prevent this but I'm lazy).  
 
-**Add it to your server today**
+It's also recommended that you make the channels the bot reads from private 
+and not visible to your general user.
+
+**Add it to your server today, if you want.**
+
+### TODO Items
+
+- support for embedded images
+- tests
+- get better with golang
 
 
 
