@@ -63,7 +63,7 @@ func main() {
 	log.Printf("Command prefix is %s\n", commandPrefix)
 
 	discord.AddHandler(func(discord *discordgo.Session, ready *discordgo.Ready) {
-		err = discord.UpdateStatus(0, "Bro!")
+		// err = discord.UpdateStatus(0, "Bro!")
 		if err != nil {
 			fmt.Println("Error attempting to set my status")
 		}
