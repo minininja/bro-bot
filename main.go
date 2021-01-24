@@ -40,7 +40,7 @@ func convertToChannel(ctx *exrouter.Context) string {
 	content := strings.Split(ctx.Msg.Content, " ")
 	if len(content) >= 2 {
 		// ignore the first part and combine the rest
-		result = strings.Join(content[1:], "-")
+		result = "brah-" + strings.Join(content[1:], "-")
 	}
 	return result
 }
