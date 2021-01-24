@@ -49,6 +49,8 @@ pipeline {
 		}
 	}
 
+	/*
+	// doesn't work right now
 	stage('Package and push buildnumber') {
 		environment {
 			PATH = "/busybox:/kaniko:$PATH"
@@ -62,5 +64,6 @@ pipeline {
                         }
 		}
 	}
+	*/
     }
 }
