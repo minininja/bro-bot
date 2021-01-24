@@ -1,5 +1,4 @@
 pipeline {
-
     agent {
         kubernetes {
             yamlFile '.jenkins-pod.yaml'
@@ -13,7 +12,7 @@ pipeline {
     }
 
     tools {
-        go '1.13.8' 
+        go '1.13.8'
     }
 
     stages {
@@ -26,7 +25,7 @@ pipeline {
                 sh 'mv $WORKSPACE/bro-bot $WORKSPACE/go-discord-bro-bot'
             }
         }
-	
+
         stage('Package and push latest') {
             environment {
                 PATH = "/busybox:/kaniko:$PATH"
@@ -35,7 +34,7 @@ pipeline {
             steps {
                 container(name: 'kaniko', shell: '/busybox/sh')  {
                     sh "env"
-                    sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:build-${env.BUILD_ID}"
+                    sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:build-${BUILD_NBR}"
                     sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --verbosity trace --destination mikej091/go-discord-bro-bot:latest"
                 }
             }
@@ -44,8 +43,8 @@ pipeline {
         stage('Deploy latest') {
             steps {
                 script {
-                    sh "sed -i 's/latest/build-${env.BUILD_ID}/g' bot-deploy.yaml"
-                    kubernetesDeploy(configs: "bot-deploy.yaml", kubeconfigId: "kubeconfig")
+                    sh "sed -i 's/latest/build-${BUILD_NBR}/g' bot-deploy.yaml"
+                    kubernetesDeployconfigs: "bot-deploy.yaml", kubeconfigId: "kubeconfig"
                 }
             }
         }
