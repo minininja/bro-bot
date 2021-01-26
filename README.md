@@ -1,4 +1,4 @@
-#Bro bot
+#Brobot
 
 Work in process, use it at your own risk.  It's a sort of parrot bot in that it 
 repeats content from other channels.  The genesis of this was to build a sort of 
