@@ -46,6 +46,7 @@ and not visible to your general user.
 - "fixture" loader for default content/channels
 - "suck and save" feature to pull out all the content
 - role, category and channel creation on startup on a new server using the above as the source for content.
+- caching
 
 
 
