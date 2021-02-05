@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: brobot-deployment
+  namespace: brobot
+  labels:
+    app: brobot
+spec:
+  nodeSelector:
+    beta.kubernetes.io/arch: arm
+  replicas: 1
+  selector:
+    matchLabels:
+      app: brobot
+  template:
+    metadata:
+      labels:
+        app: brobot
+    spec:
+      containers:
+      - name: brobot
+        image: mikej091/go-discord-bro-bot:latest
+        command:
+        - /go-discord-bro-bot
+        env:
+        - name: DG_TOKEN
+          valueFrom:  
+            secretKeyRef:
+              name: brobot-token
+              key: discord-token
+        
