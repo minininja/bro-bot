@@ -3,11 +3,11 @@ pipeline {
   stages {
     stage('setup') {
       steps {
-        tool(name: 'go', type: 'go')
+        tool(name: '1.17.2', type: 'go')
       }
     }
 
-    stage('') {
+    stage('error') {
       steps {
         sh '''go get -u github.com/Necroforger/dgrouter/exrouter
 go get -u github.com/bwmarrin/discordgo
