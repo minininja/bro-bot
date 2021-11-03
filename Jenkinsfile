@@ -1,19 +1,16 @@
 pipeline {
   agent any
+  tools {
+    go '1.17.2'
+  }
+  environment {
+    GO1172MODULE = 'on'
+  }
   stages {
-    stage('setup') {
+    stage('Compile') {
       steps {
-        tool(name: '1.17.2', type: 'go')
+        sh 'go build'
       }
     }
-
-    stage('error') {
-      steps {
-        sh '''go get -u github.com/Necroforger/dgrouter/exrouter
-go get -u github.com/bwmarrin/discordgo
-go build'''
-      }
-    }
-
   }
 }
